@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1098575998973",
+    "firebase_url": "https://naturespot-79901-79923.firebaseio.com",
+    "project_id": "naturespot-79901-79923",
+    "storage_bucket": "naturespot-79901-79923.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1098575998973:android:53f7078122e8b0d5",
+        "android_client_info": {
+          "package_name": "com.example.app.naturespot"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1098575998973-mgm218ig00kd6b9cifnvbvebi2ifff33.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.app.naturespot",
+            "certificate_hash": "5d975570af80951f9fc26878a091b8ac4a9f057c"
+          }
+        },
+        {
+          "client_id": "1098575998973-1pjdai9q25poja7m9guu8j2a4bqr4d2g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA5gv7UTAoNJcVq-yMqN7s4hEzxh-5lNYs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1098575998973-1pjdai9q25poja7m9guu8j2a4bqr4d2g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
