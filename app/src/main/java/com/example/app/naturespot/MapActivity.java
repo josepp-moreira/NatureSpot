@@ -3,7 +3,12 @@ package com.example.app.naturespot;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -14,6 +19,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    private PlaceAutocompleteFragment placeAutoComplete;
+    private LatLng latLng;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,10 +30,26 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         Intent intent = getIntent();
         String value = intent.getStringExtra("key"); //if it's a string you stored.
 
+        placeAutoComplete = (PlaceAutocompleteFragment) getFragmentManager().findFragmentById(R.id.place_autocomplete);
+        placeAutoComplete.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                latLng = place.getLatLng();
+                goToLocation(mMap, latLng);
+            }
+
+            @Override
+            public void onError(Status status) {
+                Log.d("Maps", "An error occurred: " + status);
+            }
+        });
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+
     }
 
 
@@ -44,8 +67,20 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        LatLng UA = new LatLng(40.630513, -8.657670);
+        mMap.addMarker(new MarkerOptions().position(UA).title("Marker in UA"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(UA, 13));
     }
+
+    public void goToLocation(GoogleMap googleMap, LatLng location) {
+        mMap = googleMap;
+
+        // Add a marker in Sydney and move the camera
+        mMap.clear();
+        mMap.addMarker(new MarkerOptions().position(location).title("Marker in location"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 13));
+    }
+
+
+
 }

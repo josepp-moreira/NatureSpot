@@ -126,6 +126,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginBottom="31dp"
-        android:layout_marginRight="28dp" />
+        android:layout_marginRight="28dp"
+        android:onClick="uploadSpecies"/>
 
 </android.support.constraint.ConstraintLayout>
