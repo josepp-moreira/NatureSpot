@@ -3,7 +3,10 @@ package com.example.app.naturespot;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
@@ -15,6 +18,8 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class Menu extends AppCompatActivity {
 
+    DrawerLayout drawerLayout;
+    ActionBarDrawerToggle actionBarDrawerToggle;
     Button button;
     FirebaseAuth mAuth;
     FirebaseAuth.AuthStateListener mAuthListener;
@@ -32,6 +37,12 @@ public class Menu extends AppCompatActivity {
 
         Intent intent = getIntent();
         String value = intent.getStringExtra("key"); //if it's a string you stored.
+
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
+        drawerLayout.addDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.syncState();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         button = (Button) findViewById(R.id.logout);
         mAuth = FirebaseAuth.getInstance();
@@ -55,18 +66,31 @@ public class Menu extends AppCompatActivity {
 
     }
 
+    //Items do drawer
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(actionBarDrawerToggle.onOptionsItemSelected(item)){
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    //Ir para UploadUnknownSpecies
     public void onClickPlusButton(View view)
     {
         Intent intent = new Intent(Menu.this, UploadUnknownSpecies.class);
         startActivity(intent);
     }
 
+    //Ir para SearchSpecies
     public void onClickSearchButton(View view)
     {
         Intent intent = new Intent(Menu.this, SearchSpecies.class);
         startActivity(intent);
     }
 
+    //Ir para MapActivity
     public void onClickMapButton(View view)
     {
         Intent intent = new Intent(Menu.this, MapActivity.class);

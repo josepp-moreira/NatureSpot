@@ -6,12 +6,13 @@ package com.example.app.naturespot;
 
 public class NewSpecies {
 
-    String name, image, location;
+    String name, image, location, uid;
 
-    public NewSpecies(String image, String name, String location){
+    public NewSpecies(String image, String name, String location, String uid){
         this.image = image;
         this.name = name;
         this.location = location;
+        this.uid = uid;
     }
 
 }
