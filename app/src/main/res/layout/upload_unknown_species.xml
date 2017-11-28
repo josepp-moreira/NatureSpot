@@ -21,107 +21,71 @@
         <ImageButton
             android:id="@+id/imageButton"
             android:layout_width="75dp"
-            android:layout_height="73dp"
+            android:layout_height="97dp"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:layout_marginBottom="383dp"
+            android:layout_marginBottom="152dp"
             android:adjustViewBounds="false"
             android:background="#00000000"
             android:cropToPadding="false"
             android:src="@drawable/marker"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/plusButton"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.501"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/place_autocomplete"
-            tools:layout_constraintLeft_creator="1"
-            tools:layout_constraintRight_creator="1"
-            tools:layout_constraintTop_creator="1" />
+            app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
         <ImageButton
             android:id="@+id/plusButton"
-            android:layout_width="0dp"
-            android:layout_height="77dp"
+            android:layout_width="72dp"
+            android:layout_height="0dp"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:layout_marginEnd="18dp"
-            android:layout_marginStart="44dp"
-            android:layout_marginTop="147dp"
+            android:layout_marginBottom="87dp"
             android:adjustViewBounds="false"
             android:background="#00000000"
             android:cropToPadding="false"
-            android:src="@drawable/plusicon"
-            app:layout_constraintEnd_toStartOf="@+id/textView8"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:layout_constraintLeft_creator="1"
-            tools:layout_constraintRight_creator="1"
-            tools:layout_constraintTop_creator="1" />
-
-        <TextView
-            android:id="@+id/textView5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="175dp"
-            android:layout_marginEnd="17dp"
-            android:layout_marginStart="12dp"
-            android:text="Species:"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/species_name"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:layout_constraintBottom_creator="1"
-            tools:layout_constraintLeft_creator="1"
-            tools:layout_constraintTop_creator="1" />
-
-        <TextView
-            android:id="@+id/textView8"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="136dp"
-            android:layout_marginTop="26dp"
-            android:text="Upload Image"
-            android:textSize="18sp"
+            android:onClick="onLaunchCamera"
+            android:src="@mipmap/ic_photo_camera_black_48dp"
+            app:layout_constraintBottom_toTopOf="@+id/button3"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/plusButton"
-            app:layout_constraintTop_toTopOf="@+id/plusButton"
-            tools:layout_constraintLeft_creator="1"
-            tools:layout_constraintTop_creator="1" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageButton" />
 
         <EditText
             android:id="@+id/species_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="94dp"
             android:ems="10"
             android:inputType="text"
             android:text="Unkown"
-            app:layout_constraintBaseline_toBaselineOf="@+id/textView5"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/textView5"
-            tools:layout_constraintBaseline_creator="1"
-            tools:layout_constraintLeft_creator="1" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView6"
+            tools:ignore="MissingConstraints" />
 
         <Button
             android:id="@+id/button3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="31dp"
-            android:layout_marginRight="28dp"
+            android:layout_marginBottom="28dp"
             android:onClick="uploadSpecies"
             android:text="Upload"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/place_autocomplete"
-            tools:layout_constraintBottom_creator="1"
-            tools:layout_constraintRight_creator="1" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/place_autocomplete" />
 
         <TextView
             android:id="@+id/textView6"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_below="@id/place_autocomplete"
+            android:layout_marginBottom="332dp"
             android:background="@color/place_autocomplete_prediction_primary_text_highlight"
-            app:layout_constraintBottom_toBottomOf="@+id/place_autocomplete"
+            app:layout_constraintBottom_toTopOf="@+id/species_name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -131,11 +95,25 @@
             android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginBottom="388dp"
+            android:layout_marginBottom="397dp"
             app:layout_constraintBottom_toTopOf="@+id/button3"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/mImageLabel"
+            android:layout_width="228dp"
+            android:layout_height="101dp"
+            android:layout_marginBottom="114dp"
+            android:background="@color/place_autocomplete_search_hint"
+            app:layout_constraintBottom_toTopOf="@+id/species_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView6"
+            app:layout_constraintVertical_bias="0.948"
+            app:srcCompat="@color/place_autocomplete_prediction_primary_text_highlight"
+            android:onClick="onLaunchCamera"/>
 
     </android.support.constraint.ConstraintLayout>
 

@@ -3,26 +3,36 @@ package com.example.app.naturespot;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.squareup.picasso.Picasso;
 
 /**
  * Created by joseppmoreira on 24/10/2017.
  */
 
-public class Menu extends AppCompatActivity {
+public class Menu extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    //Drawer
     DrawerLayout drawerLayout;
     ActionBarDrawerToggle actionBarDrawerToggle;
-    Button button;
+
+    //Firebase
     FirebaseAuth mAuth;
     FirebaseAuth.AuthStateListener mAuthListener;
+
+    //Header
+    ImageView pPic;
+    TextView username, email;
 
     @Override
     protected void onStart() {
@@ -44,9 +54,7 @@ public class Menu extends AppCompatActivity {
         actionBarDrawerToggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        button = (Button) findViewById(R.id.logout);
         mAuth = FirebaseAuth.getInstance();
-
         mAuthListener = new FirebaseAuth.AuthStateListener(){
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth){
@@ -57,16 +65,25 @@ public class Menu extends AppCompatActivity {
             }
         };
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAuth.signOut();
-            }
-        });
+        NavigationView navigationView = (NavigationView) findViewById(R.id.navigationView);
+        navigationView.setNavigationItemSelectedListener(this);
+        View header=navigationView.getHeaderView(0);
+        pPic = (ImageView) header.findViewById(R.id.pPic);
+        username = (TextView) header.findViewById(R.id.username);
+        email = (TextView) header.findViewById(R.id.email);
+        Picasso.with(this).load(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl()).into(pPic);
+        username.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+        email.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
 
     }
 
-    //Items do drawer
+    public void logout(){
+        // Firebase sign out
+        FirebaseAuth.getInstance().signOut();
+        startActivity(new Intent(this, MainActivity.class));
+    }
+
+    //Abrir o drawer
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(actionBarDrawerToggle.onOptionsItemSelected(item)){
@@ -74,6 +91,22 @@ public class Menu extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    //Itens do drawer
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        // Handle navigation view item clicks here.
+        switch (item.getItemId()) {
+
+            case R.id.nav_logout: {
+                logout();
+                break;
+            }
+        }
+        //close navigation drawer
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return true;
     }
 
     //Ir para UploadUnknownSpecies
@@ -96,6 +129,4 @@ public class Menu extends AppCompatActivity {
         Intent intent = new Intent(Menu.this, MapActivity.class);
         startActivity(intent);
     }
-
-
 }

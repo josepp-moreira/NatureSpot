@@ -4,27 +4,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="140dp"
-    android:background="@color/colorPrimaryDark"
+    android:background="@color/colorAccent"
     tools:layout_editor_absoluteY="81dp">
 
     <TextView
         android:id="@+id/username"
-        android:layout_width="138dp"
-        android:layout_height="28dp"
+        android:layout_width="0dp"
+        android:layout_height="27dp"
         android:layout_marginBottom="7dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:text="TextView"
         app:layout_constraintBottom_toTopOf="@+id/email"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/pPic" />"
     android:textColor="@color/common_google_signin_btn_text_dark_default" />
 
     <ImageView
         android:id="@+id/pPic"
-        android:layout_width="98dp"
+        android:layout_width="123dp"
         android:layout_height="0dp"
         android:layout_above="@+id/textView"
-        android:layout_marginBottom="14dp"
+        android:layout_marginBottom="7dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="6dp"
         android:src="@mipmap/ic_person_pin_black_24dp"
@@ -35,12 +37,14 @@
     <TextView
         android:id="@+id/email"
         android:layout_width="0dp"
-        android:layout_height="28dp"
+        android:layout_height="25dp"
         android:layout_marginBottom="4dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
         android:text="TextView"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/username"
-        app:layout_constraintStart_toStartOf="@+id/username"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/username" />
 
 </android.support.constraint.ConstraintLayout>

@@ -25,19 +25,27 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
+    //Firebase
     compile 'com.google.firebase:firebase-auth:11.6.0'
     compile 'com.google.firebase:firebase-core:11.6.0'
     compile 'com.google.firebase:firebase-database:11.6.0'
-    compile 'com.google.android.gms:play-services-auth:11.6.0'
+    compile 'com.firebaseui:firebase-ui-database:1.0.1'
+
+    //Support
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:design:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
+
+    //Google Play Services
+    compile 'com.google.android.gms:play-services-auth:11.6.0'
     compile 'com.google.android.gms:play-services-maps:11.6.0'
     compile 'com.google.android.gms:play-services-location:11.6.0'
     compile 'com.google.android.gms:play-services-places:11.6.0'
     testCompile 'junit:junit:4.12'
 
+    //Picasso
+    compile 'com.squareup.picasso:picasso:2.5.2'
 
 }
 

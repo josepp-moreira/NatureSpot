@@ -30,13 +30,13 @@ public class MainActivity extends AppCompatActivity implements
 
     SignInButton googleButton;
 
-    FirebaseAuth mAuth;
+    private static FirebaseAuth mAuth;
     FirebaseAuth.AuthStateListener mAuthListener;
 
     private final static int RC_SIGN_IN = 2;
     private static final String TAG = "SignInActivity";
 
-    GoogleApiClient mGoogleApiClient;
+    private static GoogleApiClient mGoogleApiClient;
 
     @Override
     protected void onStart(){
@@ -86,9 +86,17 @@ public class MainActivity extends AppCompatActivity implements
                 .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
+
+
     }
 
+    public static void signOut() {
+        // Firebase sign out
+        mAuth.signOut();
 
+        // Google sign out
+        Auth.GoogleSignInApi.signOut(mGoogleApiClient);
+    }
 
     private void signIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
@@ -97,6 +105,7 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        signOut();
         super.onActivityResult(requestCode, resultCode, data);
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
