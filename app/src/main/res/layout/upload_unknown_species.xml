@@ -11,10 +11,10 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="@+id/species_name"
+        app:layout_constraintBottom_toBottomOf="@+id/name"
         app:layout_constraintEnd_toStartOf="@+id/place_autocomplete"
         app:layout_constraintStart_toStartOf="@+id/place_autocomplete"
-        app:layout_constraintTop_toBottomOf="@+id/species_name"
+        app:layout_constraintTop_toBottomOf="@+id/name"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="81dp">
 
@@ -53,13 +53,13 @@
             app:layout_constraintTop_toBottomOf="@+id/imageButton" />
 
         <EditText
-            android:id="@+id/species_name"
+            android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="94dp"
             android:ems="10"
             android:inputType="text"
-            android:text="Unkown"
+            android:text="Unknown"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -85,7 +85,7 @@
             android:layout_below="@id/place_autocomplete"
             android:layout_marginBottom="332dp"
             android:background="@color/place_autocomplete_prediction_primary_text_highlight"
-            app:layout_constraintBottom_toTopOf="@+id/species_name"
+            app:layout_constraintBottom_toTopOf="@+id/name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -107,7 +107,7 @@
             android:layout_height="101dp"
             android:layout_marginBottom="114dp"
             android:background="@color/place_autocomplete_search_hint"
-            app:layout_constraintBottom_toTopOf="@+id/species_name"
+            app:layout_constraintBottom_toTopOf="@+id/name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView6"

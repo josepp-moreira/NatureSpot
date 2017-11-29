@@ -1,6 +1,8 @@
 package com.example.app.naturespot;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -8,63 +10,61 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
+
 /**
- * Created by joseppmoreira on 24/10/2017.
+ * Created by Ribeiro on 28/11/2017.
  */
 
-public class Menu extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MySpots extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     //Drawer
     DrawerLayout drawerLayout;
     ActionBarDrawerToggle actionBarDrawerToggle;
 
-    //Firebase
-    FirebaseAuth mAuth;
-    FirebaseAuth.AuthStateListener mAuthListener;
-
     //Header
     ImageView pPic;
     TextView username, email;
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        mAuth.addAuthStateListener(mAuthListener);
-    }
+    //Firebase
+    FirebaseDatabase database;
+    DatabaseReference myRef;
+    FirebaseUser uid;
+
+    //ListView
+    ListView listView;
+    private FirebaseListAdapter<Species> mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.menu);
+        setContentView(R.layout.myspots);
 
         Intent intent = getIntent();
-        String value = intent.getStringExtra("key"); //if it's a string you stored.
+        final String uidExtra = intent.getStringExtra("uid");
 
+        //Drawer
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mAuth = FirebaseAuth.getInstance();
-        mAuthListener = new FirebaseAuth.AuthStateListener(){
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth){
-                if(firebaseAuth.getCurrentUser() == null){
-                    Intent myIntent = new Intent(Menu.this, MainActivity.class);
-                    Menu.this.startActivity(myIntent);
-                }
-            }
-        };
-
+        //Header
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigationView);
         navigationView.setNavigationItemSelectedListener(this);
         View header=navigationView.getHeaderView(0);
@@ -75,15 +75,38 @@ public class Menu extends AppCompatActivity implements NavigationView.OnNavigati
         username.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
         email.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
 
+        //ListView
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference().child("UnknownSpecies");
+        listView = (ListView) findViewById(R.id.listView);
+        uid = FirebaseAuth.getInstance().getCurrentUser();
+
+        mAdapter = new FirebaseListAdapter<Species>(this, Species.class, R.layout.list_view_item, myRef) {
+            @Override
+            protected void populateView(View view, Species myObj, int position) {
+                if(myObj.getUid().equals(uidExtra)){
+                    //Nome da especie e localizaçao
+                    ((TextView)view.findViewById(R.id.name)).setText(myObj.getName());
+                    ((TextView)view.findViewById(R.id.location)).setText(myObj.getLocation());
+                    //Ver a imagem
+                    try {
+                        ((ImageView)view.findViewById(R.id.image)).setImageBitmap(decodeFromFirebaseBase64(myObj.getImage()));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
+        listView.setAdapter(mAdapter);
+        listView.setDivider(null);
     }
 
-    public void logout(){
-        // Firebase sign out
-        FirebaseAuth.getInstance().signOut();
-        startActivity(new Intent(this, MainActivity.class));
+    public Bitmap decodeFromFirebaseBase64(String image) throws IOException {
+        byte[] decodedByteArray = android.util.Base64.decode(image, Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(decodedByteArray, 0, decodedByteArray.length);
     }
 
-    //Abrir o drawer
+    //Items do drawer
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(actionBarDrawerToggle.onOptionsItemSelected(item)){
@@ -104,9 +127,6 @@ public class Menu extends AppCompatActivity implements NavigationView.OnNavigati
                 break;
             }
             case R.id.nav_account: {
-                Intent intent = new Intent(this, MySpots.class);
-                intent.putExtra("uid", FirebaseAuth.getInstance().getCurrentUser().getUid());
-                startActivity(intent);
                 break;
             }
         }
@@ -115,24 +135,9 @@ public class Menu extends AppCompatActivity implements NavigationView.OnNavigati
         return true;
     }
 
-    //Ir para UploadUnknownSpecies
-    public void onClickPlusButton(View view)
-    {
-        Intent intent = new Intent(Menu.this, UploadUnknownSpecies.class);
-        startActivity(intent);
-    }
-
-    //Ir para SearchSpecies
-    public void onClickSearchButton(View view)
-    {
-        Intent intent = new Intent(Menu.this, SearchSpecies.class);
-        startActivity(intent);
-    }
-
-    //Ir para MapActivity
-    public void onClickMapButton(View view)
-    {
-        Intent intent = new Intent(Menu.this, MapActivity.class);
-        startActivity(intent);
+    public void logout(){
+        // Firebase sign out
+        FirebaseAuth.getInstance().signOut();
+        startActivity(new Intent(this, MainActivity.class));
     }
 }

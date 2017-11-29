@@ -3,6 +3,8 @@ package com.example.app.naturespot;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -33,6 +35,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by joseppmoreira on 04/11/2017.
@@ -62,6 +67,10 @@ public class UploadUnknownSpecies extends AppCompatActivity implements Navigatio
     ImageView pPic;
     TextView username, email;
 
+    //Ver a localizaçao
+    Geocoder geocoder;
+    List<Address> addresses;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +78,9 @@ public class UploadUnknownSpecies extends AppCompatActivity implements Navigatio
         setContentView(R.layout.upload_unknown_species);
 
         mImageLabel = (ImageView) findViewById(R.id.mImageLabel);
+
+        //Geocoder
+        geocoder = new Geocoder(this, Locale.getDefault());
 
         Intent intent = getIntent();
         String value = intent.getStringExtra("key"); //if it's a string you stored.
@@ -123,6 +135,12 @@ public class UploadUnknownSpecies extends AppCompatActivity implements Navigatio
                 logout();
                 break;
             }
+            case R.id.nav_account: {
+                Intent intent = new Intent(this, MySpots.class);
+                intent.putExtra("uid", FirebaseAuth.getInstance().getCurrentUser().getUid());
+                startActivity(intent);
+                break;
+            }
         }
         //close navigation drawer
         drawerLayout.closeDrawer(GravityCompat.START);
@@ -161,7 +179,7 @@ public class UploadUnknownSpecies extends AppCompatActivity implements Navigatio
         try{
             //Conectar a base de dados
             database = FirebaseDatabase.getInstance();
-            EditText speciesName = (EditText) findViewById(R.id.species_name);
+            EditText speciesName = (EditText) findViewById(R.id.name);
 
             //Referencia das nodes "Species" e "NumberOfChilds"
             myRef = database.getReference();
@@ -172,8 +190,19 @@ public class UploadUnknownSpecies extends AppCompatActivity implements Navigatio
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
             String imageEncoded = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
 
+            //Ver a localizaçao
+            String str = latLng.toString();
+            String latlng = str.substring(str.indexOf("(")+1,str.indexOf(")"));
+            String[] array = latlng.split(",");
+            try {
+                addresses = geocoder.getFromLocation(Double.parseDouble(array[0]), Double.parseDouble(array[1]), 1);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            String city = addresses.get(0).getLocality();
+
             //Criar um especie nova
-            NewSpecies ns = new NewSpecies(imageEncoded, speciesName.getText().toString(), latLng.toString(), uid.getUid());
+            NewSpecies ns = new NewSpecies(imageEncoded, speciesName.getText().toString(), city, uid.getUid());
 
             //Enviar os valores para a base de dados
             myRef.child("UnknownSpecies").push().setValue(ns);
